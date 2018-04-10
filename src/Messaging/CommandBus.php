@@ -26,7 +26,20 @@ final class CommandBus
             ));
         }
 
-        $this->eventDispatcher->dispatch($commandName, new WrappedCommand($command));
+        $event = new class($command) extends Event {
+            private $command;
+
+            public function __construct(Command $command)
+            {
+                $this->command = $command;
+            }
+
+            public function getCommand(): Command
+            {
+                return $this->command;
+            }
+        };
+        $this->eventDispatcher->dispatch($commandName, $event);
     }
 
     public function addCommandHandler($commandName, $commandHandler)
@@ -35,8 +48,8 @@ final class CommandBus
             throw new \RuntimeException('Command handler already setup for this command.');
         }
 
-        $this->eventDispatcher->addListener($commandName, function(WrappedCommand $wrapped) use ($commandHandler) {
-            return $commandHandler($wrapped->getCommand());
+        $this->eventDispatcher->addListener($commandName, function($event) use ($commandHandler) {
+            return $commandHandler($event->getCommand());
         });
     }
 }
