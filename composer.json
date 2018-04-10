@@ -1,0 +1,20 @@
+{
+    "name": "gquemener/messaging",
+    "type": "library",
+    "require": {
+        "symfony/event-dispatcher": "^4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gildas Quéméner",
+            "email": "gildas.quemener@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "GildasQ\\": "src/"
+        }
+    }
+}
